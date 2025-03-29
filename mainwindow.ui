@@ -27,7 +27,7 @@
      <number>0</number>
     </property>
     <widget class="QWidget" name="mainMenu">
-     <widget class="QGraphicsView" name="MenuView">
+     <widget class="QGraphicsView" name="menu">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -39,7 +39,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="LevelSclect">
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="QGraphicsView" name="level">
       <property name="geometry">
        <rect>
         <x>0</x>

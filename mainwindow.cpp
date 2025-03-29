@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     stackedWidget->addWidget(levelSelect);
 
     setCentralWidget(stackedWidget);
-    setMinimumSize(1024, 768);
-    resize(1920, 1080);
+    setMinimumSize(1024, 720);
+    resize(1024, 720);
     connect(mainMenu, &MainMenu::openLevelSelect, this, &MainWindow::switchToLevelSelect);
     connect(levelSelect, &LevelSelect::backToMainMenu, this, &MainWindow::switchToMainMenu);
 }
