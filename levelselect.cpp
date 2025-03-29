@@ -1,11 +1,20 @@
 #include "levelselect.h"
+#include "ui_levelselect.h"  // This should now match the generated header
 
-LevelSelect::LevelSelect(QWidget *parent) : QWidget(parent) {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+#include <QPushButton>  // If you need QPushButton for connection
 
-    QPushButton *backButton = new QPushButton("Back to Main Menu");
-    connect(backButton, &QPushButton::clicked, this, &LevelSelect::backToMainMenu);
+LevelSelect::LevelSelect(QWidget *parent)
+    : QWidget(parent),
+    ui(new Ui::LevelSelect)
+{
+    ui->setupUi(this);
+    connect(ui->btnBack, &QPushButton::clicked, this, &LevelSelect::backToMainMenu);
+    connect(ui->oneBtn, &QPushButton::clicked, this, &LevelSelect::goToLevel1);
+    connect(ui->twoBtn, &QPushButton::clicked, this, &LevelSelect::goToLevel2);
+    connect(ui->endlessBtn, &QPushButton::clicked, this, &LevelSelect::goToEndless);
 
-    layout->addWidget(backButton);
-    setLayout(layout);
+}
+
+LevelSelect::~LevelSelect() {
+    delete ui;
 }

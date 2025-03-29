@@ -2,13 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QStackedWidget>
-#include "levelselect.h"
-#include "mainmenu.h"
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -16,11 +16,11 @@ public:
 private slots:
     void switchToLevelSelect();
     void switchToMainMenu();
+    void switchToGame();
+    void switchToSettings();
 
 private:
-    QStackedWidget *stackedWidget;
-    MainMenu *mainMenu;
-    LevelSelect *levelSelect;
+    Ui::MainWindow *ui;
 };
 
-#endif
+#endif // MAINWINDOW_H

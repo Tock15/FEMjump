@@ -28,6 +28,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         res.qrc
         Player.h
         Player.cpp
+        levelselect.ui
+        mainmenu.ui
+        settings.h settings.cpp settings.ui
+        game.h game.cpp
+
+
 
 
 

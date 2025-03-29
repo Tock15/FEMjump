@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1158</width>
-    <height>725</height>
+    <height>769</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,36 +20,11 @@
       <x>0</x>
       <y>0</y>
       <width>1151</width>
-      <height>681</height>
+      <height>711</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="mainMenu">
-     <widget class="QGraphicsView" name="menu">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1151</width>
-        <height>681</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="LevelSclect">
-     <widget class="QGraphicsView" name="level">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1151</width>
-        <height>681</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

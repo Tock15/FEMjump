@@ -1,26 +1,19 @@
-
-
 #include "mainmenu.h"
+#include "ui_mainmenu.h"
 
-MainMenu::MainMenu(QWidget *parent) : QWidget(parent) {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+#include <QPushButton>
 
-    scene = new QGraphicsScene(this);
+MainMenu::MainMenu(QWidget *parent)
+    : QWidget(parent),
+    ui(new Ui::MainMenu) {
+    ui->setupUi(this);
 
-    QGraphicsPixmapItem *player = new QGraphicsPixmapItem();
-    player->setPixmap(QPixmap(":/img/astolfo.png").scaled(50, 50));
+    // Connect the button (designed in Qt Designer with objectName "btnLevelSelect")
+    connect(ui->btnLevelSelect, &QPushButton::clicked, this, &MainMenu::openLevelSelect);
+    connect(ui->btnSettingsSelect,  &QPushButton::clicked, this, &MainMenu::openSettings);
 
-    scene->addItem(player);
+}
 
-    view = new QGraphicsView(scene);
-    view->setFixedSize(1280, 720);
-    view->setSceneRect(0, 0, 1280, 720);
-
-    QPushButton *levelSelectButton = new QPushButton("Level Select");
-    connect(levelSelectButton, &QPushButton::clicked, this, &MainMenu::openLevelSelect);
-
-
-    layout->addWidget(view);
-    layout->addWidget(levelSelectButton);
-    setLayout(layout);
+MainMenu::~MainMenu() {
+    delete ui;
 }
