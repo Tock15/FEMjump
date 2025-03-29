@@ -14,8 +14,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void switchToGame();
-    void switchToSettings();
     void switchToLevelSelect();
     void switchToMainMenu();
 
