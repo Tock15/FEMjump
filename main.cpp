@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include "Player.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,8 +15,10 @@ int main(int argc, char *argv[])
     QGraphicsScene * scene = new QGraphicsScene();
 
     //Create Rectangle
-    QGraphicsPixmapItem * player = new QGraphicsPixmapItem();
+    QGraphicsPixmapItem * player = new Player();
     player->setPixmap(QPixmap(":/img/astolfo.png").scaled(50,50));
+    player->setFlag(QGraphicsPixmapItem::ItemIsFocusable);
+    player->setFocus();
 
 
     scene->addItem(player);

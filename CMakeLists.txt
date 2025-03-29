@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         levelselect.h levelselect.cpp
         res.qrc
         Player.h
+        Player.cpp
 
 
 
