@@ -28,7 +28,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         res.qrc
         Player.h
         Player.cpp
-        Player.cpp
 
 
 
