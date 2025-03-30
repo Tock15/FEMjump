@@ -1,4 +1,5 @@
 #include "game.h"
+#include "Player.h"
 #include <QVBoxLayout>
 #include <QGraphicsRectItem>
 #include <QDebug>
@@ -24,9 +25,10 @@ void Game::clearScene() {
 
 void Game::loadLevel1() {
     clearScene();
-    QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 100, 20);
-    platform->setPos(100, 300);
-    scene->addItem(platform);
+    // QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 100, 20);
+    // platform->setPos(100, 300);
+    Player *myPlayer = new Player();
+    scene->addItem(myPlayer);
     qDebug() << "Level 1 loaded";
 }
 

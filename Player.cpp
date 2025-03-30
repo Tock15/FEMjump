@@ -3,11 +3,16 @@
 #include <qevent.h>
 void Player::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key()==Qt::Key_A){
-        qDebug() << "Go left";
-    }
     switch(event->key()){
-    case Qt::Key_A:
-        qDebug() << "Go left";
+        case Qt::Key_A:
+            qDebug() << "Go left";
+            break;
+        case Qt::Key_D:
+            qDebug() << "Go right";
+            break;
+        case Qt::Key_Space:
+            qDebug() << "Jump!";
+            break;
+
     }
 }
