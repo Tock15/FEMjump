@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->addWidget(game);
 
     // connect signal to slots very useful
+    connect(game, &Game::switchToLevel, this, &MainWindow::switchToLevelSelect);
     connect(mainMenu, &MainMenu::openLevelSelect, this, &MainWindow::switchToLevelSelect);
     connect(mainMenu, &MainMenu::openSettings, this, &MainWindow::switchToSettings);
     connect(levelSelect, &LevelSelect::backToMainMenu, this, &MainWindow::switchToMainMenu);

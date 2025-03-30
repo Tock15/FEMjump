@@ -18,6 +18,23 @@ Game::Game(QWidget *parent)
 Game::~Game() {
 
 }
+//The jumping mechanice goes in the space  section for the case
+// Design the levels in the loadlevel section and thats probably it for the game
+// i might do the settings and like options to switch resolutions and fullscreen later as options in the settings
+void Game::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+    case Qt::Key_Space:
+        qDebug() << "Space pressed";
+        break;
+    case Qt::Key_Escape:
+        qDebug() << "Escape pressed";
+        emit switchToLevel();
+        break;
+    default:
+        QWidget::keyPressEvent(event);
+        break;
+    }
+}
 void Game::clearScene() {
     scene->clear();
 }
