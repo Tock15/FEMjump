@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QKeyEvent>
+#include "Player.h"
 
 class Game : public QWidget
 {
@@ -26,6 +27,7 @@ private:
 
     QGraphicsScene *scene;
     QGraphicsView *view;
+    Player *player;
 };
 
 #endif // GAME_H

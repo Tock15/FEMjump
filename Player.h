@@ -6,7 +6,10 @@ class Player : public QGraphicsPixmapItem{
 private:
 
 public:
-    void keyPressEvent(QKeyEvent * event);
+    Player();
+    void goRight();
+    void goLeft();
+    void Jump();
 
 };
 

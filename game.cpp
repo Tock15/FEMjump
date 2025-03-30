@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 Game::Game(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), player(nullptr) //I set player as a private member of game class so we can call functions from it
 {
     setFocusPolicy(Qt::StrongFocus);
     scene = new QGraphicsScene(this);
@@ -31,6 +31,13 @@ void Game::keyPressEvent(QKeyEvent *event) {
         qDebug() << "Escape pressed";
         emit switchToLevel();
         break;
+    case Qt::Key_A:
+        player->goLeft();
+        qDebug() << "go left";
+        break;
+    case Qt::Key_D:
+        player->goRight();
+        qDebug() << "go right";
     default:
         QWidget::keyPressEvent(event);
         break;
@@ -44,13 +51,15 @@ void Game::loadLevel1() {
     clearScene();
     // QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 100, 20);
     // platform->setPos(100, 300);
-    Player *myPlayer = new Player();
-    scene->addItem(myPlayer);
+    player = new Player();
+    scene->addItem(player);
     qDebug() << "Level 1 loaded";
 }
 
 void Game::loadLevel2() {
     clearScene();
+    player = new Player();
+    scene->addItem(player);
     QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 150, 20);
     platform->setPos(200, 350);
     scene->addItem(platform);
