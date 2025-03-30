@@ -25,6 +25,7 @@ Game::~Game() {
 void Game::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_Space:
+        player->jump();
         qDebug() << "Space pressed";
         break;
     case Qt::Key_Escape:
