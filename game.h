@@ -21,7 +21,7 @@ public slots:
     void loadLevel2();
     void loadLevelendless();
 protected:
-    void keyPressEvent(QKeyEvent *event) override;  // Add this line
+    void keyPressEvent(QKeyEvent *event) override;
 private:
 
     QGraphicsScene *scene;
