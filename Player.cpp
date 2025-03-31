@@ -40,3 +40,10 @@ void Player::updatePosition() {
         isJumping = false;  // Allow jumping again
     }
 }
+void Player::land() {
+    velocityY = 0;
+    isJumping = false;
+}
+int Player::getVelocityY() const {
+    return velocityY;
+}

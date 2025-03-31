@@ -1,5 +1,5 @@
 #include "game.h"
-#include "Player.h"
+#include "player.h"
 #include <QVBoxLayout>
 #include <QGraphicsRectItem>
 #include <QDebug>
@@ -15,6 +15,10 @@ Game::Game(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(view);
     setLayout(layout);
+    collisionTimer = new QTimer(this);
+    connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
+    collisionTimer->start(7);
+    //checks 140 times per sec
 }
 Game::~Game() {
 
@@ -50,10 +54,14 @@ void Game::clearScene() {
 
 void Game::loadLevel1() {
     clearScene();
-    // QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 100, 20);
-    // platform->setPos(100, 300);
+    Platform *platform = new Platform(100, 600, 100, 20);
+    Platform *platform2 = new Platform(220, 530, 100, 20);
+
     player = new Player();
     scene->addItem(player);
+    scene->addItem(platform);
+    scene->addItem(platform2);
+
     qDebug() << "Level 1 loaded";
 }
 
@@ -61,7 +69,7 @@ void Game::loadLevel2() {
     clearScene();
     player = new Player();
     scene->addItem(player);
-    QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 150, 20);
+    Platform *platform = new Platform(100, 300, 100, 20);
     platform->setPos(200, 350);
     scene->addItem(platform);
     qDebug() << "Level 2 loaded";
@@ -69,8 +77,43 @@ void Game::loadLevel2() {
 
 void Game::loadLevelendless() {
     clearScene();
-    QGraphicsRectItem *platform = new QGraphicsRectItem(0, 0, 200, 20);
+    Platform *platform = new Platform(100, 300, 100, 20);
     platform->setPos(300, 400);
     scene->addItem(platform);
     qDebug() << "Endless loaded";
 }
+void Game::checkCollisions() {
+    if (!player)
+        return;
+
+    // get player 2d rectangular dimension
+    QRectF playerRect = player->sceneBoundingRect();
+
+    // check all items that player is colliding with
+    QList<QGraphicsItem*> collisions = player->collidingItems();
+    for (QGraphicsItem *item : collisions) {
+        if (Platform *plat = dynamic_cast<Platform*>(item)) {
+            QRectF platRect = plat->sceneBoundingRect();
+
+            // get the top and bottom to check if they pass
+            qreal playerBottom = playerRect.bottom();
+            qreal platTop = platRect.top();
+
+            // check if they overlap horiontally
+            bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
+                                     (playerRect.left() < platRect.right());
+
+            //land if the player is falling.
+            if (player->getVelocityY() > 0 && horizontalOverlap) {
+                if (playerBottom >= platTop && (playerBottom - player->getVelocityY()) < platTop) {
+                    player->setY(platTop - player->boundingRect().height());
+                    player->land();
+                }
+            }
+        }
+    }
+}
+
+
+
+
