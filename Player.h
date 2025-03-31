@@ -16,6 +16,8 @@ public:
     void goLeft();
     void jump();
     void applyGravity();
+    void land();
+    int getVelocityY() const;
 
 
 };
