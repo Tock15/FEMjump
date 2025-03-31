@@ -5,8 +5,9 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QKeyEvent>
-#include "Player.h"
-
+#include <QTimer>
+#include "platform.h"
+#include "player.h"
 class Game : public QWidget
 {
     Q_OBJECT
@@ -21,11 +22,13 @@ public slots:
     void loadLevel1();
     void loadLevel2();
     void loadLevelendless();
+    void checkCollisions();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:
 
     QGraphicsScene *scene;
+    QTimer *collisionTimer;
     QGraphicsView *view;
     Player *player;
 };
