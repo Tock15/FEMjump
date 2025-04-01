@@ -22,7 +22,7 @@ public slots:
     void loadLevel1();
     void loadLevel2();
     void loadLevelendless();
-    void checkCollisions();
+    // void checkCollisions();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private:
