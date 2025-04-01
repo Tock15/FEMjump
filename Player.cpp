@@ -3,9 +3,9 @@
 #include <QDebug>
 #include <qevent.h>
 
-Player::Player(): velocityY(0), isJumping(false), landed(false)
+Player::Player(): velocityY(0), isJumping(false), landed(false), facingDirection(1),velocityX(0)
 {
-    setPixmap(QPixmap(":/img/astolfo.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    setPixmap(QPixmap(":/img/astolfoR.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Player::updatePosition);
     timer->start(16); // Runs every 16ms (~60 FPS)
@@ -13,11 +13,21 @@ Player::Player(): velocityY(0), isJumping(false), landed(false)
 
 void Player::goRight()
 {
+    if(facingDirection == 0){
+        turn();
+    }
+    facingDirection = 1;
+    velocityX = 5;
     setPos(x()+5,y());
 }
 
 void Player::goLeft()
 {
+    if(facingDirection == 1){
+        turn();
+    }
+    facingDirection = 0;
+    velocityX = -5;
     setPos(x()-5,y());
 }
 
@@ -50,7 +60,7 @@ void Player::updatePosition() {
 
             qreal playerBottom = playerRect.bottom();
             qreal platTop = platRect.top();
-            qreal playerPrevBottom = playerBottom - velocityY;
+            //qreal playerPrevBottom = playerBottom - velocityY;
 
             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
                                      (playerRect.left() < platRect.right());
@@ -70,6 +80,9 @@ void Player::updatePosition() {
     if (!landed || !isOnPlatform) {
         applyGravity();
     }
+    if(isJumping){
+        setPos(x() + velocityX, y());
+    }
 
     if (y() > 600) {
         setPos(x(), 600);
@@ -83,4 +96,12 @@ void Player::land() {
 }
 int Player::getVelocityY() const {
     return velocityY;
+}
+void Player::turn(){
+    if(facingDirection == 1){ // turn left
+        setPixmap(QPixmap(":/img/astolfo.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
+    else if(facingDirection == 0){ // turn right
+        setPixmap(QPixmap(":/img/astolfoR.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
 }
