@@ -15,6 +15,10 @@ Game::Game(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(view);
     setLayout(layout);
+    moveTimer = new QTimer(this);
+    connect(moveTimer, &QTimer::timeout, this, &Game::handleMovement);
+    leftKeyPressed = false;
+    rightKeyPressed = false;
     // collisionTimer = new QTimer(this);
     // connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
     // collisionTimer->start(7);
@@ -26,6 +30,9 @@ Game::~Game() {
 // Design the levels in the loadlevel section and thats probably it for the game
 // i might do the settings and like options to switch resolutions and fullscreen later as options in the settings
 void Game::keyPressEvent(QKeyEvent *event) {
+    if (event->isAutoRepeat()) {
+        return;
+    }
     switch (event->key()) {
     case Qt::Key_Space:
         if(event->isAutoRepeat()){
@@ -42,24 +49,65 @@ void Game::keyPressEvent(QKeyEvent *event) {
         emit switchToLevel();
         break;
     case Qt::Key_A:
-        player->goLeft();
+        leftKeyPressed = true;
+        if (!moveTimer->isActive()) {
+            moveTimer->start(16);
+        }
         break;
     case Qt::Key_D:
-        player->goRight();
+        rightKeyPressed = true;
+        if (!moveTimer->isActive()) {
+            moveTimer->start(16);
+        }
+        break;
     default:
         QWidget::keyPressEvent(event);
         break;
     }
 }
 void Game::keyReleaseEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Space) {
+    if (event->isAutoRepeat()) {
+        return;
+    }
+    switch (event->key()) {
+    case Qt::Key_A:
+        leftKeyPressed = false;
+        if (!leftKeyPressed && !rightKeyPressed) {
+            moveTimer->stop();
+        }
+        break;
+    case Qt::Key_D:
+        rightKeyPressed = false;
+        if (!leftKeyPressed && !rightKeyPressed) {
+            moveTimer->stop();
+        }
+        break;
+    case Qt::Key_Space:
         player->releaseJump();
+        break;
+    default:
+        QWidget::keyReleaseEvent(event);
+        break;
     }
 }
+
 void Game::clearScene() {
     scene->clear();
 }
-
+void Game::handleMovement() {
+    if (player && player->isChargingJump()) {
+        return;
+    }
+    if (player && player->isJumping) {
+        return;
+    }
+    if (leftKeyPressed) {
+        player->goLeft();
+    }
+    if (rightKeyPressed) {
+        player->goRight();
+    }
+}
 void Game::loadLevel1() {
     clearScene();
     Platform *platform = new Platform(100, 600, 100, 20);
