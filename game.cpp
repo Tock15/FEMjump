@@ -15,10 +15,9 @@ Game::Game(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(view);
     setLayout(layout);
-    collisionTimer = new QTimer(this);
-    connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
-    collisionTimer->start(7);
-    //checks 140 times per sec
+    // collisionTimer = new QTimer(this);
+    // connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
+    // collisionTimer->start(7);
 }
 Game::~Game() {
 
@@ -82,37 +81,65 @@ void Game::loadLevelendless() {
     scene->addItem(platform);
     qDebug() << "Endless loaded";
 }
-void Game::checkCollisions() {
-    if (!player)
-        return;
+// void Game::checkCollisions() {
+//     if (!player)
+//         return;
 
-    // get player 2d rectangular dimension
-    QRectF playerRect = player->sceneBoundingRect();
+//     // get player 2d rectangular dimension
+//     QRectF playerRect = player->sceneBoundingRect();
 
-    // check all items that player is colliding with
-    QList<QGraphicsItem*> collisions = player->collidingItems();
-    for (QGraphicsItem *item : collisions) {
-        if (Platform *plat = dynamic_cast<Platform*>(item)) {
-            QRectF platRect = plat->sceneBoundingRect();
+//     // check all items that player is colliding with
+//     QList<QGraphicsItem*> collisions = player->collidingItems();
+//     for (QGraphicsItem *item : collisions) {
+//         if (Platform *plat = dynamic_cast<Platform*>(item)) {
+//             QRectF platRect = plat->sceneBoundingRect();
 
-            // get the top and bottom to check if they pass
-            qreal playerBottom = playerRect.bottom();
-            qreal platTop = platRect.top();
+//             // get the top and bottom to check if they pass
+//             qreal playerBottom = playerRect.bottom();
+//             qreal platTop = platRect.top();
 
-            // check if they overlap horiontally
-            bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
-                                     (playerRect.left() < platRect.right());
+//             // check if they overlap horiontally
+//             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
+//                                      (playerRect.left() < platRect.right());
 
-            //land if the player is falling.
-            if (player->getVelocityY() > 0 && horizontalOverlap) {
-                if (playerBottom >= platTop && (playerBottom - player->getVelocityY()) < platTop) {
-                    player->setY(platTop - player->boundingRect().height());
-                    player->land();
-                }
-            }
-        }
-    }
-}
+//             //land if the player is falling.
+//             if (player->getVelocityY() > 0 && horizontalOverlap) {
+//                 if (playerBottom >= platTop && (playerBottom - player->getVelocityY()) < platTop) {
+//                     player->setY(platTop - player->boundingRect().height());
+//                     player->land();
+//                 }
+//             }
+//         }
+//     }
+// }
+// void Game::checkCollisions() {
+//     if (!player) return;
+
+//     QList<QGraphicsItem *> collidingItemsList = player->collidingItems();
+//     for (QGraphicsItem *item : collidingItemsList) {
+//         Platform *platform = dynamic_cast<Platform *>(item);
+//         if (platform) {
+//             QRectF playerRect = player->sceneBoundingRect();
+//             QRectF platRect = platform->sceneBoundingRect();
+
+//             qreal playerBottom = playerRect.bottom();
+//             qreal platTop = platRect.top();
+//             qreal playerPrevBottom = playerBottom - player->getVelocityY(); // Where the player was last frame
+//             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
+//                                      (playerRect.left() < platRect.right());
+
+//             // Check if player is falling onto the platform
+//             if (player->getVelocityY() > 0 && horizontalOverlap) {
+//                 if (playerBottom >= platTop && playerPrevBottom < platTop) {
+//                     player->setPos(player->x(), platTop - player->boundingRect().height());
+//                     player->land();
+//                     return;
+//                 }
+//             }
+//         }
+//     }
+// }
+
 
 
 
