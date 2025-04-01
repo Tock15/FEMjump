@@ -6,11 +6,14 @@
 class Player : public QGraphicsPixmapItem, public QObject{
 private:
     QTimer *timer;
+    QTimer *jumpChargeTimer;
     int velocityY;
-    int velocityX;
+    double velocityX;
     bool isJumping;
     bool landed;
     int facingDirection; // 0 = left 1 = right
+    int jumpPower;
+    bool chargingJump;
 private slots:
     void updatePosition();
 public:
@@ -22,6 +25,9 @@ public:
     void land();
     int getVelocityY() const;
     void turn();
+    void startChargingJump();
+    void increaseJumpPower();
+    void releaseJump();
 
 
 };
