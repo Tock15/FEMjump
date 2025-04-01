@@ -28,23 +28,32 @@ Game::~Game() {
 void Game::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_Space:
-        player->jump();
-        qDebug() << "Space pressed";
-        break;
+        if(event->isAutoRepeat()){
+            event->ignore();
+            break;
+        }
+        else{
+            player->startChargingJump();
+            qDebug() << "Start Charging here";
+            break;
+        }
     case Qt::Key_Escape:
         qDebug() << "Escape pressed";
         emit switchToLevel();
         break;
     case Qt::Key_A:
         player->goLeft();
-        qDebug() << "go left";
         break;
     case Qt::Key_D:
         player->goRight();
-        qDebug() << "go right";
     default:
         QWidget::keyPressEvent(event);
         break;
+    }
+}
+void Game::keyReleaseEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Space) {
+        player->releaseJump();
     }
 }
 void Game::clearScene() {

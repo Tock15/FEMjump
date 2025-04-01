@@ -3,12 +3,14 @@
 #include <QDebug>
 #include <qevent.h>
 
-Player::Player(): velocityY(0), isJumping(false), landed(false), facingDirection(1),velocityX(0)
+Player::Player(): velocityY(0), isJumping(false), landed(false), facingDirection(1),velocityX(0), jumpPower(0), chargingJump(false)
 {
     setPixmap(QPixmap(":/img/astolfoR.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Player::updatePosition);
     timer->start(16); // Runs every 16ms (~60 FPS)
+    jumpChargeTimer = new QTimer(this);
+    connect(jumpChargeTimer, &QTimer::timeout, this, &Player::increaseJumpPower);
 }
 
 void Player::goRight()
@@ -71,7 +73,6 @@ void Player::updatePosition() {
                 land();
                 landed = true;
                 isOnPlatform = true;
-                qDebug() << "Player landed";
                 break;  // Exit the loop once we've landed
             }
         }
@@ -103,5 +104,38 @@ void Player::turn(){
     }
     else if(facingDirection == 0){ // turn right
         setPixmap(QPixmap(":/img/astolfoR.png").scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
+}
+void Player::startChargingJump() {
+    if (!isJumping) {
+        chargingJump = true;
+        jumpPower = 5; // Start with a minimum jump power
+        velocityX = 0;
+        jumpChargeTimer->start(25);
+        qDebug() << "Jump charging started!";
+    }
+}
+
+void Player::increaseJumpPower() {
+    if (chargingJump && jumpPower < 50 ) { // Cap max power
+        jumpPower++;
+        if(facingDirection == 0 && velocityX >= -10){
+            velocityX -=0.25;
+        }
+        else if(facingDirection == 1 && velocityX <=10){
+            velocityX +=0.25;
+        }
+        qDebug() << "Charging jump power: " << jumpPower;
+    }
+}
+
+void Player::releaseJump() {
+    if (chargingJump) {
+        velocityY = -jumpPower; // Apply charged jump
+        isJumping = true;
+        chargingJump = false;
+        jumpPower = 0;
+        jumpChargeTimer->stop();
+        qDebug() << "Jump released! Power: " << velocityY;
     }
 }
