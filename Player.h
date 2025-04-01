@@ -8,6 +8,7 @@ private:
     QTimer *timer;
     int velocityY;
     bool isJumping;
+    bool landed;
 private slots:
     void updatePosition();
 public:
