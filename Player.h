@@ -9,7 +9,6 @@ private:
     QTimer *jumpChargeTimer;
     int velocityY;
     double velocityX;
-    bool isJumping;
     bool landed;
     int facingDirection; // 0 = left 1 = right
     int jumpPower;
@@ -17,7 +16,9 @@ private:
 private slots:
     void updatePosition();
 public:
+    bool isChargingJump();
     Player();
+    bool isJumping;
     void goRight();
     void goLeft();
     void jump();

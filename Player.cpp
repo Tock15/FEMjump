@@ -128,7 +128,9 @@ void Player::increaseJumpPower() {
         qDebug() << "Charging jump power: " << jumpPower;
     }
 }
-
+bool Player::isChargingJump()  {
+    return chargingJump;
+}
 void Player::releaseJump() {
     if (chargingJump) {
         velocityY = -jumpPower; // Apply charged jump

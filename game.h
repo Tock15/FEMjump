@@ -19,6 +19,7 @@ public:
 signals:
     void switchToLevel();
 public slots:
+    void handleMovement();
     void loadLevel1();
     void loadLevel2();
     void loadLevelendless();
@@ -27,7 +28,9 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
 private:
-
+    QTimer *moveTimer;
+    bool leftKeyPressed;
+    bool rightKeyPressed;
     QGraphicsScene *scene;
     QTimer *collisionTimer;
     QGraphicsView *view;
