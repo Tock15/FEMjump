@@ -123,7 +123,7 @@ void Player::startChargingJump() {
 }
 
 void Player::increaseJumpPower() {
-    if (chargingJump && jumpPower < 25 ) { // Cap max power
+    if (chargingJump && jumpPower < 50 ) { // Cap max power
         jumpPower++;
         if(facingDirection == 0 && velocityX > -10){
             velocityX -=0.5;
