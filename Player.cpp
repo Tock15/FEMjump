@@ -19,8 +19,7 @@ void Player::goRight()
         turn();
     }
     facingDirection = 1;
-    velocityX = 5;
-    setPos(x()+5,y());
+    setPos(x()+2,y());
 }
 
 void Player::goLeft()
@@ -29,8 +28,7 @@ void Player::goLeft()
         turn();
     }
     facingDirection = 0;
-    velocityX = -5;
-    setPos(x()-5,y());
+    setPos(x()-2,y());
 }
 
 void Player::jump()
@@ -117,15 +115,16 @@ void Player::startChargingJump() {
 }
 
 void Player::increaseJumpPower() {
-    if (chargingJump && jumpPower < 50 ) { // Cap max power
+    if (chargingJump && jumpPower < 25 ) { // Cap max power
         jumpPower++;
-        if(facingDirection == 0 && velocityX >= -10){
-            velocityX -=0.25;
+        if(facingDirection == 0 && velocityX > -10){
+            velocityX -=0.5;
         }
-        else if(facingDirection == 1 && velocityX <=10){
-            velocityX +=0.25;
+        else if(facingDirection == 1 && velocityX <10){
+            velocityX +=0.5;
         }
         qDebug() << "Charging jump power: " << jumpPower;
+        qDebug() << "Charging sideway power: " << velocityX;
     }
 }
 bool Player::isChargingJump()  {

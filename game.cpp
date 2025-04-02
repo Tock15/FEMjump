@@ -35,15 +35,9 @@ void Game::keyPressEvent(QKeyEvent *event) {
     }
     switch (event->key()) {
     case Qt::Key_Space:
-        if(event->isAutoRepeat()){
-            event->ignore();
-            break;
-        }
-        else{
-            player->startChargingJump();
-            qDebug() << "Start Charging here";
-            break;
-        }
+        player->startChargingJump();
+        qDebug() << "Start Charging here";
+        break;
     case Qt::Key_Escape:
         qDebug() << "Escape pressed";
         emit switchToLevel();
