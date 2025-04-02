@@ -43,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+
     // make page main menu :3
     ui->stackedWidget->setCurrentWidget(mainMenu);
 }
