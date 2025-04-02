@@ -82,9 +82,17 @@ void Player::updatePosition() {
     if(isJumping){
         setPos(x() + velocityX, y());
     }
+    if (x() <= -30 && velocityX < 0) { // Left boundary bounce
+        velocityX = -(velocityX+3);  // Reverse the direction
+        setPos(0, y());  // Prevent going past the left boundary
+    }
+    if (x() + boundingRect().width() >= 620 && velocityX > 0) { // Right boundary bounce
+        velocityX = -(velocityX-3);  // Reverse the direction
+        setPos(620 - boundingRect().width(), y());  // Prevent going past the right boundary
+    }
 
-    if (y() > 600) {
-        setPos(x(), 600);
+    if (y() > 1900) {
+        setPos(x(), 1900);
         velocityY = 0;
         isJumping = false;  // Allow jumping again
     }
@@ -139,4 +147,11 @@ void Player::releaseJump() {
         jumpChargeTimer->stop();
         qDebug() << "Jump released! Power: " << velocityY;
     }
+}
+
+double Player::getVelocityX(){
+    return velocityX;
+}
+void Player::setVelocityX(double newV){
+    velocityX = newV;
 }

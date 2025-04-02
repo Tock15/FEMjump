@@ -1,4 +1,5 @@
 #include "game.h"
+#include "jumpeffect.h"
 #include "player.h"
 #include <QVBoxLayout>
 #include <QGraphicsRectItem>
@@ -10,10 +11,12 @@ Game::Game(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
     scene = new QGraphicsScene(this);
     view = new QGraphicsView(scene, this);
-    view->setFixedSize(1280, 720);
-    scene->setSceneRect(0, 0, 1280, 720);
+    view->setFixedSize(650, 720);
+    scene->setSceneRect(0, 0, 600, 2000);
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter);  // Ensure the QGraphicsView is centered
     layout->addWidget(view);
+    view->centerOn(0, scene->sceneRect().bottom());
     setLayout(layout);
     moveTimer = new QTimer(this);
     connect(moveTimer, &QTimer::timeout, this, &Game::handleMovement);
@@ -78,9 +81,8 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
         break;
     case Qt::Key_Space:
         player->releaseJump();
-        break;
-    default:
-        QWidget::keyReleaseEvent(event);
+        JumpEffect *effect = new JumpEffect(player->x()+10, player->y()+50);
+        scene->addItem(effect);
         break;
     }
 }
@@ -104,8 +106,8 @@ void Game::handleMovement() {
 }
 void Game::loadLevel1() {
     clearScene();
-    Platform *platform = new Platform(100, 600, 100, 20);
-    Platform *platform2 = new Platform(220, 530, 100, 20);
+    Platform *platform = new Platform(100, 1900, 100, 20);
+    Platform *platform2 = new Platform(420, 1700, 100, 20);
 
     player = new Player();
     scene->addItem(player);
