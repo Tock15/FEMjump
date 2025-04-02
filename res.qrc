@@ -2,5 +2,6 @@
     <qresource prefix="/img">
         <file>astolfo.png</file>
         <file>astolfoR.png</file>
+        <file>jump.png</file>
     </qresource>
 </RCC>

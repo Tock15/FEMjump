@@ -34,6 +34,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         game.h game.cpp
         platform.h platform.cpp
         platform.h platform.cpp
+        jumpeffect.h jumpeffect.cpp
 
 
 

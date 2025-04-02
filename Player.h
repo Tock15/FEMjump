@@ -25,6 +25,8 @@ public:
     void applyGravity();
     void land();
     int getVelocityY() const;
+    double getVelocityX();
+    void setVelocityX(double newV);
     void turn();
     void startChargingJump();
     void increaseJumpPower();
