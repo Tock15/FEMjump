@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QDebug>
 #include <QKeyEvent>
+#include <vector>
 Game::Game(QWidget *parent)
     : QWidget(parent), player(nullptr) //I set player as a private member of game class so we can call functions from it
 {
@@ -111,13 +112,18 @@ void Game::handleMovement() {
 }
 void Game::loadLevel1() {
     clearScene();
-    Platform *platform = new Platform(100, 1900, 100, 20);
-    Platform *platform2 = new Platform(420, 1700, 100, 20);
+    std::vector<Platform*> platforms;
+    platforms.push_back(new Platform(100, 1900, 100, 20));
+    platforms.push_back(new Platform(420, 1700, 100, 20));
+    platforms.push_back(new Platform(450, 1500, 100, 20));
+    platforms.push_back(new Platform(50, 1300, 100, 20));
+    platforms.push_back(new Platform(420, 1100, 50, 20));
 
     player = new Player();
     scene->addItem(player);
-    scene->addItem(platform);
-    scene->addItem(platform2);
+    for(auto p : platforms){
+        scene->addItem(p);
+    }
 
     qDebug() << "Level 1 loaded";
 }
