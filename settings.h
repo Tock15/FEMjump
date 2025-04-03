@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <QWidget>
+#include <QJsonObject>
 
 namespace Ui {
 class Settings;
@@ -18,6 +19,7 @@ signals:
     void backToMainMenu();
 private:
     Ui::Settings *ui;
+    QJsonObject recordobj;
 };
 
 #endif // SETTINGS_H

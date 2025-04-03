@@ -8,6 +8,7 @@
 #include <QTimer>
 #include "platform.h"
 #include "player.h"
+#include <QSoundEffect>
 class Game : public QWidget
 {
     Q_OBJECT
@@ -35,6 +36,8 @@ private:
     QTimer *collisionTimer;
     QGraphicsView *view;
     Player *player;
+    QSoundEffect *jumpSound;
+
 };
 
 #endif // GAME_H
