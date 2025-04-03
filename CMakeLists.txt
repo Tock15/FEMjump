@@ -36,6 +36,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         platform.h platform.cpp
         platform.h platform.cpp
         jumpeffect.h jumpeffect.cpp
+        wall.h wall.cpp
+
 
 
 

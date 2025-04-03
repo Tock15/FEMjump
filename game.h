@@ -8,6 +8,7 @@
 #include <QTimer>
 #include "platform.h"
 #include "player.h"
+#include "wall.h"
 #include <QSoundEffect>
 class Game : public QWidget
 {

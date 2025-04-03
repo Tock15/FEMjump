@@ -104,20 +104,31 @@ void Game::handleMovement() {
         return;
     }
     if (leftKeyPressed) {
+        if(player->x() <=-30){
+            qDebug() << player->x();
+            return;
+        }
         player->goLeft();
     }
     if (rightKeyPressed) {
+        if(player->x() >=620 - player->boundingRect().width()){
+            qDebug() << player->x();
+            return;
+        }
         player->goRight();
     }
 }
 void Game::loadLevel1() {
     clearScene();
     std::vector<Platform*> platforms;
-    platforms.push_back(new Platform(100, 1900, 100, 20));
+    //platforms.push_back(new Platform(100, 1900, 100, 20));
     platforms.push_back(new Platform(420, 1700, 100, 20));
     platforms.push_back(new Platform(450, 1500, 100, 20));
     platforms.push_back(new Platform(50, 1300, 100, 20));
     platforms.push_back(new Platform(420, 1100, 50, 20));
+    Wall *wall1 = new Wall(200, 1800, 20, 100);
+    scene->addItem(wall1);
+
 
     player = new Player();
     scene->addItem(player);
