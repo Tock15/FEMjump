@@ -21,6 +21,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QString loadStyle(const QString& path);
+
 };
 
 #endif // MAINWINDOW_H

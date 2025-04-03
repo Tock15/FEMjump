@@ -43,9 +43,9 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QCheckBox" name="themeToggleButton">
          <property name="text">
-          <string>PushButton</string>
+          <string>Toggle Dark Mode?</string>
          </property>
         </widget>
        </item>

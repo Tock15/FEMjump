@@ -8,6 +8,7 @@ Settings::Settings(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->menuBtn, &QPushButton::clicked, this, &Settings::backToMainMenu);
+    connect(ui->themeToggleButton, &QCheckBox::toggled, this, &Settings::themeToggle);
 
 
 }
