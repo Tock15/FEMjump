@@ -23,8 +23,8 @@ Game::Game(QWidget *parent)
     leftKeyPressed = false;
     rightKeyPressed = false;
     jumpSound = new QSoundEffect(this);
-    jumpSound->setSource(QUrl("qrc:/sounds/cartoon-jump-6462.mp3"));
-    jumpSound->setVolume(0.5f);
+    jumpSound->setSource(QUrl("qrc:/sounds/jumpSound.mp3"));
+    jumpSound->setVolume(10.0f);
     // collisionTimer = new QTimer(this);
     // connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
     // collisionTimer->start(7);
@@ -133,6 +133,8 @@ void Game::loadLevel2() {
 
 void Game::loadLevelendless() {
     clearScene();
+    player = new Player();
+    scene->addItem(player);
     Platform *platform = new Platform(100, 300, 100, 20);
     platform->setPos(300, 400);
     scene->addItem(platform);
