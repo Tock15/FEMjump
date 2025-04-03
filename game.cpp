@@ -94,6 +94,7 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
 void Game::clearScene() {
     scene->clear();
 }
+
 void Game::handleMovement() {
     if (player && player->isChargingJump()) {
         return;

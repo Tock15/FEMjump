@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QGraphicsView>
 
 class Player : public QGraphicsPixmapItem, public QObject{
 private:
