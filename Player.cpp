@@ -48,9 +48,13 @@ void Player::applyGravity(){
 
     setPos(x(), y() + velocityY);
 }
+double lerp(double start, double end, double alpha) {
+    return start + alpha * (end - start);
+}
 void Player::updatePosition() {
     QList<QGraphicsItem *> collidingItemsList = collidingItems();
     bool isOnPlatform = false;
+
 
     for (QGraphicsItem *item : collidingItemsList) {
         Platform *platform = dynamic_cast<Platform *>(item);
@@ -90,6 +94,32 @@ void Player::updatePosition() {
         velocityX = -(velocityX-3);  // Reverse the direction
         setPos(620 - boundingRect().width(), y());  // Prevent going past the right boundary
     }
+    QGraphicsScene *scene = this->scene();
+    if (!scene || scene->views().isEmpty()) return;
+
+    QGraphicsView *view = scene->views().first(); // Get the first view
+    QPointF targetCenter(x(), y() - 100); // Offset to center above player
+
+    // Get current scene center
+    QPointF currentCenter = view->mapToScene(view->viewport()->rect().center());
+
+    // Smoothly interpolate the camera position
+    double smoothFactor = 0.1;  // Adjust for smoother or snappier movement
+    QPointF newCenter(lerp(currentCenter.x(), targetCenter.x(), smoothFactor),
+                      lerp(currentCenter.y(), targetCenter.y(), smoothFactor));
+
+    // Set the new center
+    view->centerOn(newCenter);
+
+    // ANOTHER VERSION OF CAMERA CENTERING
+
+    // if (scene() && !scene()->views().isEmpty()) {
+    //     QGraphicsView *view = scene()->views().at(0);
+    //     if (view) {
+    //         view->centerOn(this);
+    //     }
+    // }
+
 
     if (y() > 1900) {
         setPos(x(), 1900);
