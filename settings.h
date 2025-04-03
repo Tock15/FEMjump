@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QJsonObject>
-
+#include <QJsonDocument>
 namespace Ui {
 class Settings;
 }
@@ -17,9 +17,11 @@ public:
     ~Settings();
 signals:
     void backToMainMenu();
+    void themeToggle(bool darkMode);
 private:
     Ui::Settings *ui;
     QJsonObject recordobj;
+    QJsonDocument doc;
 };
 
 #endif // SETTINGS_H

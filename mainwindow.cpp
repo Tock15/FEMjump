@@ -1,10 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QFile>
 #include "mainmenu.h"
 #include "levelselect.h"
 #include "settings.h"
 #include "game.h"
+#include <QTextStream>
+QString MainWindow::loadStyle(const QString& path) {
+    QFile file(path);
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+        return "";
+    QTextStream in(&file);
+    return in.readAll();
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -40,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(levelSelect, &LevelSelect::goToLevel2, game, &Game::loadLevel2);
     connect(levelSelect, &LevelSelect::goToEndless, game, &Game::loadLevelendless);
     connect(settings, &Settings::backToMainMenu, this, &MainWindow::switchToMainMenu);
+    connect(settings, &Settings::themeToggle, this, [=](bool darkMode) {
+        QString style = loadStyle(darkMode ? ":/themes/dark.qss" : ":/themes/light.qss");
+        qApp->setStyleSheet(style);
+    });
 
 
 
