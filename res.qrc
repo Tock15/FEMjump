@@ -4,11 +4,11 @@
         <file>astolfoR.png</file>
         <file>jump.png</file>
     </qresource>
-    <qresource prefix="/sound">
-        <file>cartoon-jump-6462.mp3</file>
-    </qresource>
     <qresource prefix="/themes">
         <file>light.qss</file>
         <file>dark.qss</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>jumpSound.mp3</file>
     </qresource>
 </RCC>
