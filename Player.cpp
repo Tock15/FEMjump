@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "platform.h"
+#include "wall.h"
 #include <QDebug>
 #include <qevent.h>
 
@@ -58,6 +59,7 @@ void Player::updatePosition() {
 
     for (QGraphicsItem *item : collidingItemsList) {
         Platform *platform = dynamic_cast<Platform *>(item);
+        Wall *wall = dynamic_cast<Wall *>(item);
         if (platform) {
             QRectF playerRect = sceneBoundingRect();
             QRectF platRect = platform->sceneBoundingRect();
@@ -78,6 +80,19 @@ void Player::updatePosition() {
                 break;  // Exit the loop once we've landed
             }
         }
+        if (wall && isJumping) {
+            // Check if moving right (colliding with the right wall)
+            if (velocityX > 0 && x() + boundingRect().width() >= wall->x()) {
+                velocityX = -(velocityX - 3);  // Reverse direction with a slight adjustment
+                setPos(wall->getX() - boundingRect().width(), y());  // Move player just outside the wall to prevent overlap
+
+            }
+            // Check if moving left (colliding with the left wall)
+            else if (velocityX < 0 && x() <= wall->getX() + wall->rect().width()) {
+                velocityX = -(velocityX + 3);  // Reverse direction with a slight adjustment
+                setPos(wall->getX() + wall->rect().width(), y());  // Move player just outside the wall to prevent overlap
+            }
+        }
     }
 
     if (!landed || !isOnPlatform) {
@@ -88,7 +103,7 @@ void Player::updatePosition() {
     }
     if (x() <= -30 && velocityX < 0) { // Left boundary bounce
         velocityX = -(velocityX+3);  // Reverse the direction
-        setPos(0, y());  // Prevent going past the left boundary
+        setPos(-30, y());  // Prevent going past the left boundary
     }
     if (x() + boundingRect().width() >= 620 && velocityX > 0) { // Right boundary bounce
         velocityX = -(velocityX-3);  // Reverse the direction
