@@ -55,101 +55,122 @@ double lerp(double start, double end, double alpha) {
 void Player::updatePosition() {
     QList<QGraphicsItem *> collidingItemsList = collidingItems();
     bool isOnPlatform = false;
+    bool hitCeiling = false;
 
-
+    // **1. Handle Vertical Movement (Ceiling & Floor Collisions)**
     for (QGraphicsItem *item : collidingItemsList) {
         Platform *platform = dynamic_cast<Platform *>(item);
         Wall *wall = dynamic_cast<Wall *>(item);
-        if (platform) {
-            QRectF playerRect = sceneBoundingRect();
-            QRectF platRect = platform->sceneBoundingRect();
 
+        QRectF playerRect = sceneBoundingRect();
+
+        // **Ceiling Collision (Head Hits Wall)**
+        if (wall && velocityY < 0) {
+            QRectF wallRect = wall->sceneBoundingRect();
+            bool horizontalOverlap = (playerRect.right() > wallRect.left()+10) &&
+                                     (playerRect.left() < wallRect.right()-10);
+
+            if (horizontalOverlap && playerRect.top() <= wallRect.bottom()) {
+                velocityY = 0;  // Stop moving up
+                setPos(x(), wallRect.bottom());  // Stay just below the ceiling
+                hitCeiling = true;
+                break;  // Stop checking further ceiling collisions
+            }
+        }
+
+        // **Landing on Platform**
+        if (platform) {
+            QRectF platRect = platform->sceneBoundingRect();
             qreal playerBottom = playerRect.bottom();
             qreal platTop = platRect.top();
-            //qreal playerPrevBottom = playerBottom - velocityY;
-
             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
                                      (playerRect.left() < platRect.right());
 
-            // If player is falling and lands on the platform
             if (velocityY > 0 && horizontalOverlap && playerBottom >= platTop) {
                 setPos(x(), platTop - boundingRect().height());
                 land();
-                landed = true;
                 isOnPlatform = true;
-                break;  // Exit the loop once we've landed
-            }
-        }
-        if (wall && isJumping) {
-            // Check if moving right (colliding with the right wall)
-            if (velocityX > 0 && x() + boundingRect().width() >= wall->x()) {
-                velocityX = -(velocityX - 3);  // Reverse direction with a slight adjustment
-                setPos(wall->getX() - boundingRect().width(), y());  // Move player just outside the wall to prevent overlap
-
-            }
-            // Check if moving left (colliding with the left wall)
-            else if (velocityX < 0 && x() <= wall->getX() + wall->rect().width()) {
-                velocityX = -(velocityX + 3);  // Reverse direction with a slight adjustment
-                setPos(wall->getX() + wall->rect().width(), y());  // Move player just outside the wall to prevent overlap
-            }
-        }
-        if (wall && !isJumping){
-            if (x() + boundingRect().width() >= wall->getX()){
-                emit disableRight();
-            }
-            if(x() <= wall->getX() + wall->rect().width()){
-                emit disableLeft();
+                break;
             }
         }
     }
 
-    if (!landed || !isOnPlatform) {
+    // **Apply Gravity Only if Not on Platform or Ceiling**
+    if (!isOnPlatform && !hitCeiling) {
         applyGravity();
     }
-    if(isJumping){
+
+    // **2. Handle Horizontal Movement (Wall Bounces)**
+    if (!hitCeiling) {  // Only apply side bounce if we're not hitting the ceiling
+        for (QGraphicsItem *item : collidingItemsList) {
+            Wall *wall = dynamic_cast<Wall *>(item);
+            if (!wall) continue;
+
+            QRectF playerRect = sceneBoundingRect();
+            QRectF wallRect = wall->sceneBoundingRect();
+
+            if(isJumping){
+                if (velocityX > 0 && playerRect.right() >= wallRect.left() &&
+                    playerRect.left() < wallRect.right()) {
+                    velocityX = -(velocityX - 3);  // Reverse direction with energy loss
+                    setPos(wallRect.left() - boundingRect().width(), y());
+                }
+                // **Left Wall Collision**
+                else if (velocityX < 0 && playerRect.left() <= wallRect.right() &&
+                         playerRect.right() > wallRect.left()) {
+                    velocityX = -(velocityX + 3);  // Reverse direction with energy loss
+                    setPos(wallRect.right(), y());
+                }
+            }
+            if(!isJumping){
+                if (x() + boundingRect().width() >= wall->getX()){
+                    emit disableRight();
+                }
+                if(x() <= wall->getX() + wall->rect().width()){
+                    emit disableLeft();
+                }
+            }
+        }
+    }
+
+    // **Apply Horizontal Movement**
+    if (isJumping) {
         setPos(x() + velocityX, y());
     }
-    if (x() <= -30 && velocityX < 0) { // Left boundary bounce
-        velocityX = -(velocityX+3);  // Reverse the direction
-        setPos(-30, y());  // Prevent going past the left boundary
+
+    // **Boundary Bounces**
+    if (x() <= -30 && velocityX < 0) {
+        velocityX = -(velocityX + 3);
+        setPos(-30, y());
     }
-    if (x() + boundingRect().width() >= 620 && velocityX > 0) { // Right boundary bounce
-        velocityX = -(velocityX-3);  // Reverse the direction
-        setPos(620 - boundingRect().width(), y());  // Prevent going past the right boundary
+    if (x() + boundingRect().width() >= 620 && velocityX > 0) {
+        velocityX = -(velocityX - 3);
+        setPos(620 - boundingRect().width(), y());
     }
+
+    // **Camera Follow Logic**
     QGraphicsScene *scene = this->scene();
     if (!scene || scene->views().isEmpty()) return;
 
-    QGraphicsView *view = scene->views().first(); // Get the first view
-    QPointF targetCenter(x(), y() - 100); // Offset to center above player
-
-    // Get current scene center
+    QGraphicsView *view = scene->views().first();
+    QPointF targetCenter(x(), y() - 100);
     QPointF currentCenter = view->mapToScene(view->viewport()->rect().center());
-
-    // Smoothly interpolate the camera position
-    double smoothFactor = 0.1;  // Adjust for smoother or snappier movement
+    double smoothFactor = 0.1;
     QPointF newCenter(lerp(currentCenter.x(), targetCenter.x(), smoothFactor),
                       lerp(currentCenter.y(), targetCenter.y(), smoothFactor));
 
-    // Set the new center
     view->centerOn(newCenter);
 
-    // ANOTHER VERSION OF CAMERA CENTERING
-
-    // if (scene() && !scene()->views().isEmpty()) {
-    //     QGraphicsView *view = scene()->views().at(0);
-    //     if (view) {
-    //         view->centerOn(this);
-    //     }
-    // }
-
-
+    // **Prevent Falling Too Far**
     if (y() > 1900) {
         setPos(x(), 1900);
         velocityY = 0;
-        isJumping = false;  // Allow jumping again
+        isJumping = false;
     }
 }
+
+
+
 void Player::land() {
     velocityY = 0;
     isJumping = false;

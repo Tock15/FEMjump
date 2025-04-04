@@ -14,6 +14,7 @@ Game::Game(SettingsManager *settingsManager,QWidget *parent)
     view = new QGraphicsView(scene, this);
     view->setFixedSize(650, 720);
     scene->setSceneRect(0, 0, 600, 2000);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);  // Ensure the QGraphicsView is centered
     layout->addWidget(view);
@@ -105,7 +106,6 @@ void Game::clearScene() {
 }
 
 void Game::handleMovement() {
-    checkCollisions();
     if (player && player->isChargingJump()) {
         return;
     }
@@ -128,22 +128,40 @@ void Game::handleMovement() {
 void Game::loadLevel1() {
     clearScene();
     std::vector<Platform*> platforms;
-    //platforms.push_back(new Platform(100, 1900, 100, 20));
-    platforms.push_back(new Platform(420, 1700, 100, 20));
-    platforms.push_back(new Platform(450, 1500, 100, 20));
-    platforms.push_back(new Platform(50, 1300, 100, 20));
-    platforms.push_back(new Platform(420, 1100, 50, 20));
-    Wall *wall1 = new Wall(200, 1500, 20, 500);
-    scene->addItem(wall1);
+    std::vector<Wall*> walls;
+    platforms.push_back(new Platform(-25, 1950, 650, 20)); //spawn
+
+    // Platforms and wall go together in pairs where platform y = wall's y - platform's height
+    platforms.push_back(new Platform(-25, 1780, 200, 20));
+    walls.push_back(new Wall(-25, 1800, 200, 200));
+
+    platforms.push_back(new Platform(450, 1780, 200, 20));
+    walls.push_back(new Wall(450, 1800, 200, 200));
+
+    platforms.push_back(new Platform(175,1580,270,20));
+    walls.push_back(new Wall(175,1600,270,20));
+
+
+
+
+
+
+
 
 
     player = new Player();
     scene->addItem(player);
+    player->setPos(300,1750);
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
+
     for(auto p : platforms){
         scene->addItem(p);
     }
+    for(auto w : walls){
+        scene->addItem(w);
+    }
+
 
     qDebug() << "Level 1 loaded";
 }
@@ -175,37 +193,6 @@ void Game::onDisableRight()
 void Game::onDisableLeft(){
     noLeft = true;
 }
-// void Game::checkCollisions() {
-//     if (!player)
-//         return;
-
-//     // get player 2d rectangular dimension
-//     QRectF playerRect = player->sceneBoundingRect();
-
-//     // check all items that player is colliding with
-//     QList<QGraphicsItem*> collisions = player->collidingItems();
-//     for (QGraphicsItem *item : collisions) {
-//         if (Platform *plat = dynamic_cast<Platform*>(item)) {
-//             QRectF platRect = plat->sceneBoundingRect();
-
-//             // get the top and bottom to check if they pass
-//             qreal playerBottom = playerRect.bottom();
-//             qreal platTop = platRect.top();
-
-//             // check if they overlap horiontally
-//             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
-//                                      (playerRect.left() < platRect.right());
-
-//             //land if the player is falling.
-//             if (player->getVelocityY() > 0 && horizontalOverlap) {
-//                 if (playerBottom >= platTop && (playerBottom - player->getVelocityY()) < platTop) {
-//                     player->setY(platTop - player->boundingRect().height());
-//                     player->land();
-//                 }
-//             }
-//         }
-//     }
-// }
 void Game::checkCollisions() {
     if (!player) return;
 

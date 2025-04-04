@@ -5,7 +5,7 @@ Wall::Wall(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
 {
     xPos = x;
     setBrush(QBrush(Qt::gray));
-    setPen(QPen(Qt::NoPen));
+    setPen(QPen(Qt::red));
 }
 
 qreal Wall::getX(){
