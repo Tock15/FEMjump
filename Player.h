@@ -4,7 +4,8 @@
 #include <QTimer>
 #include <QGraphicsView>
 
-class Player : public QGraphicsPixmapItem, public QObject{
+class Player : public QObject, public QGraphicsPixmapItem{
+    Q_OBJECT
 private:
     QTimer *timer;
     QTimer *jumpChargeTimer;
@@ -32,6 +33,9 @@ public:
     void startChargingJump();
     void increaseJumpPower();
     void releaseJump();
+signals:
+    void disableRight();
+    void disableLeft();
 
 
 };

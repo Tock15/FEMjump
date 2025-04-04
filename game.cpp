@@ -26,9 +26,9 @@ Game::Game(SettingsManager *settingsManager,QWidget *parent)
     jumpSound = new QSoundEffect(this);
     jumpSound->setSource(QUrl("qrc:/sounds/jumpSound.wav"));
     jumpSound->setVolume(settingsManager->audioVolume() / 100.0f);
-    // collisionTimer = new QTimer(this);
-    // connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
-    // collisionTimer->start(7);
+    collisionTimer = new QTimer(this);
+    connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
+    collisionTimer->start(7);
 }
 Game::~Game() {
 
@@ -98,27 +98,28 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
+
+
 void Game::clearScene() {
     scene->clear();
 }
 
 void Game::handleMovement() {
+    checkCollisions();
     if (player && player->isChargingJump()) {
         return;
     }
     if (player && player->isJumping) {
         return;
     }
-    if (leftKeyPressed) {
-        if(player->x() <=-30){
-            qDebug() << player->x();
+    if (leftKeyPressed && !noLeft) {
+        if (player->x() <= -30) {
             return;
         }
         player->goLeft();
     }
-    if (rightKeyPressed) {
-        if(player->x() >=620 - player->boundingRect().width()){
-            qDebug() << player->x();
+    if (rightKeyPressed && !noRight) {
+        if (player->x() >= 620 - player->boundingRect().width()) {
             return;
         }
         player->goRight();
@@ -132,12 +133,14 @@ void Game::loadLevel1() {
     platforms.push_back(new Platform(450, 1500, 100, 20));
     platforms.push_back(new Platform(50, 1300, 100, 20));
     platforms.push_back(new Platform(420, 1100, 50, 20));
-    Wall *wall1 = new Wall(200, 1800, 20, 100);
+    Wall *wall1 = new Wall(200, 1500, 20, 500);
     scene->addItem(wall1);
 
 
     player = new Player();
     scene->addItem(player);
+    connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
+    connect(player, &Player::disableRight, this, &Game::onDisableRight);
     for(auto p : platforms){
         scene->addItem(p);
     }
@@ -163,6 +166,14 @@ void Game::loadLevelendless() {
     platform->setPos(300, 400);
     scene->addItem(platform);
     qDebug() << "Endless loaded";
+}
+
+void Game::onDisableRight()
+{
+    noRight = true;
+}
+void Game::onDisableLeft(){
+    noLeft = true;
 }
 // void Game::checkCollisions() {
 //     if (!player)
@@ -195,33 +206,41 @@ void Game::loadLevelendless() {
 //         }
 //     }
 // }
-// void Game::checkCollisions() {
-//     if (!player) return;
+void Game::checkCollisions() {
+    if (!player) return;
 
-//     QList<QGraphicsItem *> collidingItemsList = player->collidingItems();
-//     for (QGraphicsItem *item : collidingItemsList) {
-//         Platform *platform = dynamic_cast<Platform *>(item);
-//         if (platform) {
-//             QRectF playerRect = player->sceneBoundingRect();
-//             QRectF platRect = platform->sceneBoundingRect();
+    bool touchingLeftWall = false;
+    bool touchingRightWall = false;
 
-//             qreal playerBottom = playerRect.bottom();
-//             qreal platTop = platRect.top();
-//             qreal playerPrevBottom = playerBottom - player->getVelocityY(); // Where the player was last frame
-//             bool horizontalOverlap = (playerRect.right() > platRect.left()) &&
-//                                      (playerRect.left() < platRect.right());
+    QList<QGraphicsItem *> collidingItemsList = player->collidingItems();
+    for (QGraphicsItem *item : collidingItemsList) {
+        if (Wall *wall = dynamic_cast<Wall *>(item)) {
+            QRectF playerRect = player->sceneBoundingRect();
+            QRectF wallRect = wall->sceneBoundingRect();
 
-//             // Check if player is falling onto the platform
-//             if (player->getVelocityY() > 0 && horizontalOverlap) {
-//                 if (playerBottom >= platTop && playerPrevBottom < platTop) {
-//                     player->setPos(player->x(), platTop - player->boundingRect().height());
-//                     player->land();
-//                     return;
-//                 }
-//             }
-//         }
-//     }
-// }
+            if (playerRect.right() >= wallRect.left() && playerRect.left() < wallRect.left()) {
+                touchingRightWall = true;
+            }
+            if (playerRect.left() <= wallRect.right() && playerRect.right() > wallRect.right()) {
+                touchingLeftWall = true;
+            }
+        }
+    }
+
+    // Disable movement when colliding
+    if (touchingLeftWall) {
+        onDisableLeft();
+    } else {
+        noLeft = false;
+    }
+
+    if (touchingRightWall) {
+        onDisableRight();
+    } else {
+        noRight = false;
+    }
+}
+
 
 
 
