@@ -9,8 +9,13 @@
 #include "platform.h"
 #include "player.h"
 #include "wall.h"
-#include <QSoundEffect>
 #include "settingsmanager.h"
+#include <QSoundEffect>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+class QSoundEffect;
+class QMediaPlayer;
+class QAudioOutput;
 class Game : public QWidget
 {
     Q_OBJECT
@@ -20,6 +25,7 @@ public:
     ~Game();
     void clearScene();
     void setJumpSoundVolume(float volume);
+    void setMusicVolume(float volume);
 signals:
     void switchToLevel();
 public slots:
@@ -45,6 +51,12 @@ private:
     SettingsManager *settingsManager;
     bool noLeft;
     bool noRight;
+    QMediaPlayer *bgMusic;
+    QAudioOutput *bgAudio;
+    QStringList musicTracks;
+    int currentTrackIndex = 0;
+    int score = 0;
+    int highScore = 0;
 };
 
 #endif // GAME_H

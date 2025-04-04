@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <vector>
+
 Game::Game(SettingsManager *settingsManager,QWidget *parent)
     : QWidget(parent), player(nullptr), settingsManager(settingsManager) //I set player as a private member of game class so we can call functions from it
 {
@@ -30,10 +31,46 @@ Game::Game(SettingsManager *settingsManager,QWidget *parent)
     collisionTimer = new QTimer(this);
     connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
     collisionTimer->start(7);
+    bgAudio = new QAudioOutput(this);
+    bgAudio->setVolume(settingsManager->audioVolume() / 100.0f);
+
+    bgAudio = new QAudioOutput(this);
+    bgAudio->setVolume(settingsManager->audioVolume() / 100.0f);
+
+    bgMusic = new QMediaPlayer(this);
+    bgMusic->setAudioOutput(bgAudio);
+
+    musicTracks << "qrc:/music/theme1.mp3" << "qrc:/music/theme2.mp3" << "qrc:/music/theme3.mp3";
+
+    bgMusic->setSource(QUrl(musicTracks[currentTrackIndex]));
+    bgMusic->play();
+    connect(bgMusic, &QMediaPlayer::mediaStatusChanged, this, [=](QMediaPlayer::MediaStatus status) {
+        if (status == QMediaPlayer::EndOfMedia) {
+            currentTrackIndex = (currentTrackIndex + 1) % musicTracks.size();  // Loop
+            bgMusic->setSource(QUrl(musicTracks[currentTrackIndex]));
+            bgMusic->play();
+        }
+    });
+}
+void Game::setMusicVolume(float volume) {
+    if (bgAudio) {
+        bgAudio->setVolume(volume);
+    }
 }
 Game::~Game() {
+    if (bgMusic) {
+        bgMusic->stop();
+        bgMusic->setSource(QUrl());
+        bgMusic->disconnect();
+    }
 
+    if (bgAudio) {
+        delete bgAudio;
+        bgAudio = nullptr;
+    }
+qDebug() << "bgMusic status:" << bgMusic->mediaStatus();
 }
+
 void Game::setJumpSoundVolume(float volume) {
     if (jumpSound) {
         jumpSound->setVolume(volume);

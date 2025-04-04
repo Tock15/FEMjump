@@ -25,8 +25,10 @@ Settings::Settings(SettingsManager *settingsManager,Game *game,QWidget *parent)
 
     connect(ui->menuBtn, &QPushButton::clicked, this, &Settings::backToMainMenu);
     connect(ui->volumeSlider, &QSlider::valueChanged, this, [=](int val) {
+        float volume = val / 100.0f;
         settingsManager->setAudioVolume(val);
-        game->setJumpSoundVolume(val / 100.0f);
+        game->setJumpSoundVolume(volume);
+        game->setMusicVolume(volume);
     });
 
 }

@@ -3,6 +3,9 @@
         <file>astolfo.png</file>
         <file>astolfoR.png</file>
         <file>jump.png</file>
+        <file>theme1.mp3</file>
+        <file>theme2.mp3</file>
+        <file>theme3.mp3</file>
     </qresource>
     <qresource prefix="/themes">
         <file>light.qss</file>
@@ -12,5 +15,10 @@
     </qresource>
     <qresource prefix="/sounds">
         <file>jumpSound.wav</file>
+    </qresource>
+    <qresource prefix="/music">
+        <file>theme1.mp3</file>
+        <file>theme2.mp3</file>
+        <file>theme3.mp3</file>
     </qresource>
 </RCC>

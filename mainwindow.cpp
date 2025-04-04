@@ -70,6 +70,7 @@ MainWindow::~MainWindow() {
     if (settingsManager) {
         settingsManager->save();
     }
+
     delete ui;
 }
 
