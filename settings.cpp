@@ -9,14 +9,21 @@ Settings::Settings(SettingsManager *settingsManager,Game *game,QWidget *parent)
     ,game(game)
 {
     ui->setupUi(this);
-    ui->themeToggleButton->setChecked(settingsManager->theme() == "dark");
+    QStringList themes = { "light", "dark", "cyberpunk", "forest" };
+    ui->themeComboBox->addItems(themes);
     ui->volumeSlider->setValue(settingsManager->audioVolume());
-    connect(ui->menuBtn, &QPushButton::clicked, this, &Settings::backToMainMenu);
-    connect(ui->themeToggleButton, &QCheckBox::toggled, this, [=](bool checked) {
-        settingsManager->setTheme(checked ? "dark" : "light");
-        emit themeToggle(checked);
+    QString currentTheme = settingsManager->theme();
+    int index = themes.indexOf(currentTheme);
+    if (index >= 0) {
+        ui->themeComboBox->setCurrentIndex(index);
+    }
+
+    connect(ui->themeComboBox, &QComboBox::currentTextChanged, this, [=](const QString &theme) {
+        settingsManager->setTheme(theme);
+        emit themeToggle();
     });
 
+    connect(ui->menuBtn, &QPushButton::clicked, this, &Settings::backToMainMenu);
     connect(ui->volumeSlider, &QSlider::valueChanged, this, [=](int val) {
         settingsManager->setAudioVolume(val);
         game->setJumpSoundVolume(val / 100.0f);

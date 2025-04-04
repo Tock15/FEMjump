@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // add all classes
     settingsManager->load();
+    QString theme = settingsManager->theme();
+    qApp->setStyleSheet(loadStyle(":/themes/" + theme + ".qss"));
     MainMenu *mainMenu = new MainMenu(this);
     LevelSelect *levelSelect = new LevelSelect(this);
     Game *game = new Game(settingsManager, this);
@@ -51,12 +53,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(levelSelect, &LevelSelect::goToLevel2, game, &Game::loadLevel2);
     connect(levelSelect, &LevelSelect::goToEndless, game, &Game::loadLevelendless);
     connect(settings, &Settings::backToMainMenu, this, &MainWindow::switchToMainMenu);
-    connect(settings, &Settings::themeToggle, this, [=](bool darkMode) {
-        QString style = loadStyle(darkMode ? ":/themes/dark.qss" : ":/themes/light.qss");
-        qApp->setStyleSheet(style);
+    connect(settings, &Settings::themeToggle, this, [=]() {
+        QString theme = settingsManager->theme();
+        qApp->setStyleSheet(loadStyle(":/themes/" + theme + ".qss"));
     });
-    QString theme = settingsManager->theme();
-    qApp->setStyleSheet(loadStyle(theme == "dark" ? ":/themes/dark.qss" : ":/themes/light.qss"));
 
 
 

@@ -11,8 +11,8 @@ class SettingsManager : public QObject {
 public:
     explicit SettingsManager(QObject* parent = nullptr);
 
-    void load();   // Load from JSON file
-    void save();   // Save to JSON file
+    void load();   // load from json file
+    void save();   // save to json file
 
     QString theme() const;
     void setTheme(const QString& theme);

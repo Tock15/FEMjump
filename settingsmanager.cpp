@@ -7,8 +7,8 @@ SettingsManager::SettingsManager(QObject* parent)
 void SettingsManager::load() {
     QFile file(settingsFilePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Settings file not found. Using defaults.";
-        save();  // Create file with defaults
+        qWarning() << "file not found using default";
+        save();
         return;
     }
 
@@ -20,7 +20,7 @@ void SettingsManager::load() {
 void SettingsManager::save() {
     QFile file(settingsFilePath);
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Failed to save settings.";
+        qWarning() << "failed to save settings.";
         return;
     }
 

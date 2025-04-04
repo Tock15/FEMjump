@@ -19,7 +19,7 @@ public:
     ~Settings();
 signals:
     void backToMainMenu();
-    void themeToggle(bool darkMode);
+    void themeToggle();
 private:
     Ui::Settings *ui;
     QJsonObject recordobj;
