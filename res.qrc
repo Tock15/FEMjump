@@ -7,6 +7,8 @@
     <qresource prefix="/themes">
         <file>light.qss</file>
         <file>dark.qss</file>
+        <file>cyberpunk.qss</file>
+        <file>forest.qss</file>
     </qresource>
     <qresource prefix="/sounds">
         <file>jumpSound.wav</file>

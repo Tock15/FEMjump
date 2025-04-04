@@ -1,0 +1,40 @@
+QWidget {
+    background-color: #0d0d0d;
+    color: #00ffff;
+    font-family: "Segoe UI", sans-serif;
+}
+
+QPushButton {
+    background-color: #1a1a1a;
+    color: #00ffff;
+    border: 1px solid #ff00ff;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+QPushButton:hover {
+    background-color: #330033;
+}
+
+QPushButton:pressed {
+    background-color: #660066;
+    border-style: inset;
+}
+
+QLineEdit, QTextEdit {
+    background-color: #1a1a1a;
+    color: #00ffff;
+    border: 1px solid #ff00ff;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QCheckBox, QRadioButton {
+    spacing: 6px;
+    color: #00ffff;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+}
