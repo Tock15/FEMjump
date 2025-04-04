@@ -27,7 +27,9 @@ public slots:
     void loadLevel1();
     void loadLevel2();
     void loadLevelendless();
-    // void checkCollisions();
+    void onDisableRight();
+    void onDisableLeft();
+    void checkCollisions();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
@@ -41,6 +43,8 @@ private:
     Player *player;
     QSoundEffect *jumpSound;
     SettingsManager *settingsManager;
+    bool noLeft;
+    bool noRight;
 };
 
 #endif // GAME_H

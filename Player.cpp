@@ -93,6 +93,14 @@ void Player::updatePosition() {
                 setPos(wall->getX() + wall->rect().width(), y());  // Move player just outside the wall to prevent overlap
             }
         }
+        if (wall && !isJumping){
+            if (x() + boundingRect().width() >= wall->getX()){
+                emit disableRight();
+            }
+            if(x() <= wall->getX() + wall->rect().width()){
+                emit disableLeft();
+            }
+        }
     }
 
     if (!landed || !isOnPlatform) {
