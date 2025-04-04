@@ -6,8 +6,8 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <vector>
-Game::Game(QWidget *parent)
-    : QWidget(parent), player(nullptr) //I set player as a private member of game class so we can call functions from it
+Game::Game(SettingsManager *settingsManager,QWidget *parent)
+    : QWidget(parent), player(nullptr), settingsManager(settingsManager) //I set player as a private member of game class so we can call functions from it
 {
     setFocusPolicy(Qt::StrongFocus);
     scene = new QGraphicsScene(this);
@@ -24,8 +24,8 @@ Game::Game(QWidget *parent)
     leftKeyPressed = false;
     rightKeyPressed = false;
     jumpSound = new QSoundEffect(this);
-    jumpSound->setSource(QUrl("qrc:/sounds/jumpSound.mp3"));
-    jumpSound->setVolume(10.0f);
+    jumpSound->setSource(QUrl("qrc:/sounds/jumpSound.wav"));
+    jumpSound->setVolume(settingsManager->audioVolume() / 100.0f);
     // collisionTimer = new QTimer(this);
     // connect(collisionTimer, &QTimer::timeout, this, &Game::checkCollisions);
     // collisionTimer->start(7);
@@ -33,6 +33,12 @@ Game::Game(QWidget *parent)
 Game::~Game() {
 
 }
+void Game::setJumpSoundVolume(float volume) {
+    if (jumpSound) {
+        jumpSound->setVolume(volume);
+    }
+}
+
 //The jumping mechanice goes in the space  section for the case
 // Design the levels in the loadlevel section and thats probably it for the game
 // i might do the settings and like options to switch resolutions and fullscreen later as options in the settings

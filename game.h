@@ -10,14 +10,16 @@
 #include "player.h"
 #include "wall.h"
 #include <QSoundEffect>
+#include "settingsmanager.h"
 class Game : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Game(QWidget *parent = nullptr);
+    explicit Game(SettingsManager *settingsManager, QWidget *parent = nullptr);
     ~Game();
     void clearScene();
+    void setJumpSoundVolume(float volume);
 signals:
     void switchToLevel();
 public slots:
@@ -38,7 +40,7 @@ private:
     QGraphicsView *view;
     Player *player;
     QSoundEffect *jumpSound;
-
+    SettingsManager *settingsManager;
 };
 
 #endif // GAME_H

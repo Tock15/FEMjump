@@ -16,7 +16,9 @@ QString MainWindow::loadStyle(const QString& path) {
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+    ui(new Ui::MainWindow),
+    settingsManager(new SettingsManager(this))
+    {
     ui->setupUi(this);
 
     // set uniform size
@@ -25,11 +27,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stackedWidget->setFixedSize(1280, 720);
 
     // add all classes
+    settingsManager->load();
     MainMenu *mainMenu = new MainMenu(this);
     LevelSelect *levelSelect = new LevelSelect(this);
-    Settings *settings = new Settings(this);
-    Game *game = new Game(this);
-
+    Game *game = new Game(settingsManager, this);
+    Settings *settings = new Settings(settingsManager, game, this);
+    game->setJumpSoundVolume(settingsManager->audioVolume() / 100.0f);
     // add the pages to the stacked widget
     ui->stackedWidget->addWidget(mainMenu);
     ui->stackedWidget->addWidget(levelSelect);
@@ -52,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
         QString style = loadStyle(darkMode ? ":/themes/dark.qss" : ":/themes/light.qss");
         qApp->setStyleSheet(style);
     });
+    QString theme = settingsManager->theme();
+    qApp->setStyleSheet(loadStyle(theme == "dark" ? ":/themes/dark.qss" : ":/themes/light.qss"));
+
 
 
 
@@ -61,6 +67,9 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
+    if (settingsManager) {
+        settingsManager->save();
+    }
     delete ui;
 }
 
