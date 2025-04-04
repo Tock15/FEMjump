@@ -9,6 +9,6 @@
         <file>dark.qss</file>
     </qresource>
     <qresource prefix="/sounds">
-        <file>jumpSound.mp3</file>
+        <file>jumpSound.wav</file>
     </qresource>
 </RCC>

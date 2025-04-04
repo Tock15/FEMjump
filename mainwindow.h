@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "settingsmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,7 +23,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString loadStyle(const QString& path);
-
+    SettingsManager *settingsManager;
 };
 
 #endif // MAINWINDOW_H
