@@ -178,6 +178,24 @@ void Game::loadLevel1() {
     platforms.push_back(new Platform(175,1580,270,20));
     walls.push_back(new Wall(175,1600,270,20));
 
+    platforms.push_back(new Platform(425,1380,100,20));
+    walls.push_back(new Wall(425,1400,100,20));
+
+    // platforms.push_back(new Platform(525,1290,100,10));
+    // walls.push_back(new Wall(525,1300,100,10));
+
+    platforms.push_back(new Platform(250,1240,100,10));
+    walls.push_back(new Wall(250,1250,100,10));
+
+    platforms.push_back(new Platform(50,1240,100,10));
+    walls.push_back(new Wall(50,1250,100,10));
+
+    platforms.push_back(new Platform(75,1090,300,10));
+    walls.push_back(new Wall(75,1100,300,10));
+
+    platforms.push_back(new Platform(275,990,100,10));
+    walls.push_back(new Wall(275,1000,100,90));
+
 
 
 
