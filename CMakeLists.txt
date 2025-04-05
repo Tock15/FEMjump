@@ -38,6 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         jumpeffect.h jumpeffect.cpp
         wall.h wall.cpp
         settingsmanager.h settingsmanager.cpp
+        spike.h spike.cpp
 
 
 
