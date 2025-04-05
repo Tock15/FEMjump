@@ -222,7 +222,7 @@ void Game::loadLevel1() {
 
     player = new Player();
     scene->addItem(player);
-    player->setPos(300,0);
+    player->setPos(300,1900);
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
 
