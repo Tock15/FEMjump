@@ -97,6 +97,8 @@ void Player::updatePosition() {
                 WinPlatform *winPlatform = dynamic_cast<WinPlatform *>(item);
                 if(winPlatform){
                     qDebug() << "WIN!";
+                    emit reachedWin();
+                    timer->stop();
                 }
                 break;
             }
