@@ -33,11 +33,12 @@ public slots:
     void handleMovement();
     void loadLevel1();
     void loadLevel2();
-    void loadLevelendless();
+    // void loadLevelendless();
     void onDisableRight();
     void onDisableLeft();
     void checkCollisions();
     void respawnCharacter();
+    void handleWin();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
@@ -59,6 +60,8 @@ private:
     int currentTrackIndex = 0;
     int score = 0;
     int highScore = 0;
+    QGraphicsTextItem *winTextItem;
+    bool win;
 };
 
 #endif // GAME_H

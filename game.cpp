@@ -148,13 +148,13 @@ void Game::handleMovement() {
     if (player && player->isJumping) {
         return;
     }
-    if (leftKeyPressed && !noLeft) {
+    if (leftKeyPressed && !noLeft && !win) {
         if (player->x() <= -30) {
             return;
         }
         player->goLeft();
     }
-    if (rightKeyPressed && !noRight) {
+    if (rightKeyPressed && !noRight && !win) {
         if (player->x() >= 620 - player->boundingRect().width()) {
             return;
         }
@@ -162,6 +162,9 @@ void Game::handleMovement() {
     }
 }
 void Game::loadLevel1() {
+    win = false;
+    winTextItem = nullptr;
+    scene->removeItem(winTextItem);
     clearScene();
     std::vector<Platform*> platforms;
     std::vector<Wall*> walls;
@@ -226,6 +229,7 @@ void Game::loadLevel1() {
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
     connect(player, &Player::respawn,this,&Game::respawnCharacter);
+    connect(player, &Player::reachedWin, this, &Game::handleWin);
 
     for(auto p : platforms){
         scene->addItem(p);
@@ -239,6 +243,9 @@ void Game::loadLevel1() {
 }
 
 void Game::loadLevel2() {
+    scene->removeItem(winTextItem);
+    winTextItem = nullptr;
+    win = false;
     clearScene();
     std::vector<Platform*> platforms;
     std::vector<Wall*> walls;
@@ -254,15 +261,14 @@ void Game::loadLevel2() {
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
     connect(player, &Player::respawn, this, &Game::respawnCharacter);
+    connect(player, &Player::reachedWin, this, &Game::handleWin);
 
-    // Initial platform and spikes
     platforms.push_back(new Platform(-25, 1730, 100, 20));
     walls.push_back(new Wall(-25, 1750, 100, 200));
     for (int i = 0; i < 10; i++) {
         spikes.push_back(new Spike(300 + 30 * i, 1920));
     }
 
-    // Path upwards
     platforms.push_back(new Platform(250, 1690, 50, 10));
     walls.push_back(new Wall(250, 1700, 50, 10));
 
@@ -272,7 +278,7 @@ void Game::loadLevel2() {
     platforms.push_back(new Platform(450, 1390, 60, 10));
     walls.push_back(new Wall(450, 1400, 60, 10));
 
-    walls.push_back(new Wall(440, 1210, 10, 200)); // Vertical wall only
+    walls.push_back(new Wall(440, 1210, 10, 200));
 
     platforms.push_back(new Platform(-25, 1440, 400, 10));
     walls.push_back(new Wall(-25, 1450, 400, 70));
@@ -283,15 +289,12 @@ void Game::loadLevel2() {
     platforms.push_back(new Platform(-25, 1290, 75, 10));
     walls.push_back(new Wall(-25, 1300, 75, 140));
 
-    walls.push_back(new Wall(150, 1100, 100, 250)); // wall only
-
+    walls.push_back(new Wall(150, 1100, 100, 250));
     platforms.push_back(new Platform(100, 1090, 150, 10));
     walls.push_back(new Wall(100, 1100, 50, 10));
 
     platforms.push_back(new Platform(500, 990, 50, 10));
     walls.push_back(new Wall(500, 1000, 50, 10));
-
-    // --- Extension upwards ---
 
     platforms.push_back(new Platform(300, 900, 100, 10));
     walls.push_back(new Wall(300, 910, 100, 10));
@@ -324,13 +327,12 @@ void Game::loadLevel2() {
     platforms.push_back(new Platform(50, 300, 100, 10));
     walls.push_back(new Wall(50, 310, 100, 10));
 
-    walls.push_back(new Wall(40, 100, 10, 220)); // Final climb wall
+    walls.push_back(new Wall(40, 100, 10, 220));
 
-    // Final Win Platform
     WinPlatform* winP = new WinPlatform(500, 50, 100, 10);
     scene->addItem(winP);
 
-    // Add everything to scene
+
     for (auto p : platforms) {
         scene->addItem(p);
     }
@@ -344,18 +346,15 @@ void Game::loadLevel2() {
     qDebug() << "Level 2 loaded";
 }
 
-
-
-
-void Game::loadLevelendless() {
-    clearScene();
-    player = new Player();
-    scene->addItem(player);
-    Platform *platform = new Platform(100, 300, 100, 20);
-    platform->setPos(300, 400);
-    scene->addItem(platform);
-    qDebug() << "Endless loaded";
-}
+// void Game::loadLevelendless() {
+//     clearScene();
+//     player = new Player();
+//     scene->addItem(player);
+//     Platform *platform = new Platform(100, 300, 100, 20);
+//     platform->setPos(300, 400);
+//     scene->addItem(platform);
+//     qDebug() << "Endless loaded";
+// }
 
 void Game::onDisableRight()
 {
@@ -408,6 +407,20 @@ void Game::respawnCharacter() {
         scene->addItem(player);
     });
 }
+
+void Game::handleWin()
+{
+    if (!winTextItem) {
+        win = true;
+        winTextItem = new QGraphicsTextItem("YOU WON!\n Press Esc to go back \nto level select");
+        winTextItem->setFont(QFont("Arial", 30, QFont::Bold));
+        winTextItem->setDefaultTextColor(Qt::green);
+        winTextItem->setPos(scene->width() / 2 - winTextItem->boundingRect().width() / 2,
+                            225);
+        scene->addItem(winTextItem);
+    }
+}
+
 
 
 

@@ -38,6 +38,7 @@ signals:
     void disableRight();
     void disableLeft();
     void respawn();
+    void reachedWin();
 
 
 };
