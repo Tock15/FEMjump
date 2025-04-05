@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     // set uniform size
     setMinimumSize(1280, 720);
     resize(1280, 720);
-    ui->stackedWidget->setFixedSize(1280, 720);
 
     // add all classes
     settingsManager->load();
