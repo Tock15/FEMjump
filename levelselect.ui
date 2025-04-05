@@ -247,7 +247,7 @@
         <widget class="QPushButton" name="btnBack">
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>150</width>
            <height>50</height>
           </size>
          </property>
