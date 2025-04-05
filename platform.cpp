@@ -5,5 +5,5 @@ Platform::Platform(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *p
 {
     //stone grey
     setBrush(QBrush(Qt::gray));
-    //setPen(QPen(Qt::NoPen));
+    setPen(QPen(Qt::NoPen));
 }
