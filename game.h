@@ -37,6 +37,7 @@ public slots:
     void onDisableRight();
     void onDisableLeft();
     void checkCollisions();
+    void respawnCharacter();
 protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;

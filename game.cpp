@@ -213,17 +213,19 @@ void Game::loadLevel1() {
     WinPlatform *winP = new WinPlatform(10,100,100,10);
     scene->addItem(winP);
 
-
-
+    // Spike *spike1 = new Spike();
+    // spike1->setPos(-25,1750);
+    // scene->addItem(spike1);
 
 
 
 
     player = new Player();
     scene->addItem(player);
-    player->setPos(300,1900);
+    player->setPos(200,1850);
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
+    connect(player, &Player::respawn,this,&Game::respawnCharacter);
 
     for(auto p : platforms){
         scene->addItem(p);
@@ -238,16 +240,112 @@ void Game::loadLevel1() {
 
 void Game::loadLevel2() {
     clearScene();
+    std::vector<Platform*> platforms;
+    std::vector<Wall*> walls;
+    std::vector<Spike*> spikes;
+
+    // Spawn platform
+    platforms.push_back(new Platform(-25, 1950, 650, 20));
+
+    // Player
     player = new Player();
     scene->addItem(player);
-    Spike *spike = new Spike();
-    spike->setPos(550, 1900);
-    scene->addItem(spike);
-    Platform *platform = new Platform(100, 300, 100, 20);
-    platform->setPos(200, 350);
-    scene->addItem(platform);
+    player->setPos(200,1850);
+    connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
+    connect(player, &Player::disableRight, this, &Game::onDisableRight);
+    connect(player, &Player::respawn, this, &Game::respawnCharacter);
+
+    // Initial platform and spikes
+    platforms.push_back(new Platform(-25, 1730, 100, 20));
+    walls.push_back(new Wall(-25, 1750, 100, 200));
+    for (int i = 0; i < 10; i++) {
+        spikes.push_back(new Spike(300 + 30 * i, 1920));
+    }
+
+    // Path upwards
+    platforms.push_back(new Platform(250, 1690, 50, 10));
+    walls.push_back(new Wall(250, 1700, 50, 10));
+
+    platforms.push_back(new Platform(450, 1690, 50, 10));
+    walls.push_back(new Wall(450, 1700, 50, 10));
+
+    platforms.push_back(new Platform(450, 1390, 60, 10));
+    walls.push_back(new Wall(450, 1400, 60, 10));
+
+    walls.push_back(new Wall(440, 1210, 10, 200)); // Vertical wall only
+
+    platforms.push_back(new Platform(-25, 1440, 400, 10));
+    walls.push_back(new Wall(-25, 1450, 400, 70));
+
+    spikes.push_back(new Spike(345, 1410));
+    spikes.push_back(new Spike(315, 1410));
+
+    platforms.push_back(new Platform(-25, 1290, 75, 10));
+    walls.push_back(new Wall(-25, 1300, 75, 140));
+
+    walls.push_back(new Wall(150, 1100, 100, 250)); // wall only
+
+    platforms.push_back(new Platform(100, 1090, 150, 10));
+    walls.push_back(new Wall(100, 1100, 50, 10));
+
+    platforms.push_back(new Platform(500, 990, 50, 10));
+    walls.push_back(new Wall(500, 1000, 50, 10));
+
+    // --- Extension upwards ---
+
+    platforms.push_back(new Platform(300, 900, 100, 10));
+    walls.push_back(new Wall(300, 910, 100, 10));
+
+    platforms.push_back(new Platform(150, 800, 60, 10));
+    walls.push_back(new Wall(150, 810, 60, 10));
+
+    spikes.push_back(new Spike(150, 770));
+    spikes.push_back(new Spike(180, 770));
+
+    platforms.push_back(new Platform(375, 700, 100, 10));
+    walls.push_back(new Wall(375, 710, 100, 10));
+
+    platforms.push_back(new Platform(100, 600, 150, 10));
+    walls.push_back(new Wall(100, 610, 150, 10));
+
+    spikes.push_back(new Spike(130, 570));
+    spikes.push_back(new Spike(160, 570));
+    spikes.push_back(new Spike(190, 570));
+
+    platforms.push_back(new Platform(450, 500, 40, 10));
+    walls.push_back(new Wall(450, 510, 40, 10));
+
+    platforms.push_back(new Platform(250, 400, 100, 10));
+    walls.push_back(new Wall(250, 410, 100, 10));
+
+    spikes.push_back(new Spike(280, 370));
+    spikes.push_back(new Spike(310, 370));
+
+    platforms.push_back(new Platform(50, 300, 100, 10));
+    walls.push_back(new Wall(50, 310, 100, 10));
+
+    walls.push_back(new Wall(40, 100, 10, 220)); // Final climb wall
+
+    // Final Win Platform
+    WinPlatform* winP = new WinPlatform(500, 50, 100, 10);
+    scene->addItem(winP);
+
+    // Add everything to scene
+    for (auto p : platforms) {
+        scene->addItem(p);
+    }
+    for (auto w : walls) {
+        scene->addItem(w);
+    }
+    for (auto s : spikes) {
+        scene->addItem(s);
+    }
+
     qDebug() << "Level 2 loaded";
 }
+
+
+
 
 void Game::loadLevelendless() {
     clearScene();
@@ -301,6 +399,15 @@ void Game::checkCollisions() {
     }
 }
 
+void Game::respawnCharacter() {
+    scene->removeItem(player);
+
+    QTimer::singleShot(500, this, [this]() {
+        player->setPos(200, 1850);
+        player->setVelocityX(0);
+        scene->addItem(player);
+    });
+}
 
 
 

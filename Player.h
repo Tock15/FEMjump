@@ -4,7 +4,7 @@
 #include <QTimer>
 #include <QGraphicsView>
 #include "winplatform.h"
-
+#include "spike.h"
 class Player : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 private:
@@ -37,6 +37,7 @@ public:
 signals:
     void disableRight();
     void disableLeft();
+    void respawn();
 
 
 };
