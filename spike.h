@@ -9,7 +9,7 @@
 class Spike : public QObject, public QGraphicsPolygonItem {
     Q_OBJECT
 public:
-    explicit Spike(QGraphicsItem *parent = nullptr);
+    explicit Spike(qreal x, qreal y, QGraphicsItem *parent = nullptr);
 };
 
 #endif // SPIKE_H

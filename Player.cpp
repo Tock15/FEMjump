@@ -61,6 +61,10 @@ void Player::updatePosition() {
     for (QGraphicsItem *item : collidingItemsList) {
         Platform *platform = dynamic_cast<Platform *>(item);
         Wall *wall = dynamic_cast<Wall *>(item);
+        Spike *spike  = dynamic_cast<Spike *>(item);
+        if(spike){
+            emit respawn();
+        }
 
         QRectF playerRect = sceneBoundingRect();
 
@@ -165,7 +169,7 @@ void Player::updatePosition() {
 
     view->centerOn(newCenter);
 
-    // **Prevent Falling Too Far**
+    //**Prevent Falling Too Far**
     if (y() > 1900) {
         setPos(x(), 1900);
         velocityY = 0;
