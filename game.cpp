@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <vector>
-
 Game::Game(SettingsManager *settingsManager,QWidget *parent)
     : QWidget(parent), player(nullptr), settingsManager(settingsManager) //I set player as a private member of game class so we can call functions from it
 {
@@ -241,6 +240,9 @@ void Game::loadLevel2() {
     clearScene();
     player = new Player();
     scene->addItem(player);
+    Spike *spike = new Spike();
+    spike->setPos(550, 1900);
+    scene->addItem(spike);
     Platform *platform = new Platform(100, 300, 100, 20);
     platform->setPos(200, 350);
     scene->addItem(platform);

@@ -9,6 +9,7 @@
 #include "platform.h"
 #include "player.h"
 #include "wall.h"
+#include "spike.h"
 #include "settingsmanager.h"
 #include <QSoundEffect>
 #include <QMediaPlayer>

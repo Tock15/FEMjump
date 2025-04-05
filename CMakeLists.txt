@@ -39,6 +39,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         wall.h wall.cpp
         settingsmanager.h settingsmanager.cpp
         winplatform.h winplatform.cpp
+        spike.h spike.cpp
+
 
 
 
