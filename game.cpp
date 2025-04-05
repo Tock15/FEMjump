@@ -181,9 +181,6 @@ void Game::loadLevel1() {
     platforms.push_back(new Platform(425,1380,100,20));
     walls.push_back(new Wall(425,1400,100,20));
 
-    // platforms.push_back(new Platform(525,1290,100,10));
-    // walls.push_back(new Wall(525,1300,100,10));
-
     platforms.push_back(new Platform(250,1240,100,10));
     walls.push_back(new Wall(250,1250,100,10));
 
@@ -191,12 +188,31 @@ void Game::loadLevel1() {
     walls.push_back(new Wall(50,1250,100,10));
 
     platforms.push_back(new Platform(75,1090,300,10));
-    walls.push_back(new Wall(75,1100,300,10));
+    walls.push_back(new Wall(75,1100,300,20));
 
     platforms.push_back(new Platform(275,990,100,10));
     walls.push_back(new Wall(275,1000,100,90));
 
+    platforms.push_back(new Platform(550,940,100,10));
+    walls.push_back(new Wall(550,950,100,20));
 
+    platforms.push_back(new Platform(275,790,100,10));
+    walls.push_back(new Wall(275,800,100,20));
+
+    platforms.push_back(new Platform(150,690,50,10));
+    walls.push_back(new Wall(130,500,20,200));
+    platforms.push_back(new Platform(130,490,20,10));
+
+    platforms.push_back(new Platform(400,590,50,10));
+    walls.push_back(new Wall(400,600,50,50));
+
+
+    platforms.push_back(new Platform(400,290,25,10));
+    walls.push_back(new Wall(400,300,25,200));
+
+
+    WinPlatform *winP = new WinPlatform(10,100,100,10);
+    scene->addItem(winP);
 
 
 
@@ -206,7 +222,7 @@ void Game::loadLevel1() {
 
     player = new Player();
     scene->addItem(player);
-    player->setPos(300,1750);
+    player->setPos(300,0);
     connect(player, &Player::disableLeft, this, &Game::onDisableLeft);
     connect(player, &Player::disableRight, this, &Game::onDisableRight);
 

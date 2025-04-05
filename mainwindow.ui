@@ -17,6 +17,9 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
       <widget class="QWidget" name="page"/>
       <widget class="QWidget" name="page_2"/>
      </widget>
@@ -29,7 +32,7 @@
      <x>0</x>
      <y>0</y>
      <width>1158</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
