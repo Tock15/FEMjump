@@ -90,6 +90,10 @@ void Player::updatePosition() {
                 setPos(x(), platTop - boundingRect().height());
                 land();
                 isOnPlatform = true;
+                WinPlatform *winPlatform = dynamic_cast<WinPlatform *>(item);
+                if(winPlatform){
+                    qDebug() << "WIN!";
+                }
                 break;
             }
         }

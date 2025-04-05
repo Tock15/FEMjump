@@ -15,7 +15,6 @@ public:
 
 signals:
     void goToLevel1();
-    void goToEndless();
     void goToLevel2();
     void backToMainMenu();
 

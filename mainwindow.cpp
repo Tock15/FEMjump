@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     // set uniform size
     setMinimumSize(1280, 720);
     resize(1280, 720);
-    ui->stackedWidget->setFixedSize(1280, 720);
 
     // add all classes
     settingsManager->load();
@@ -48,10 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(levelSelect, &LevelSelect::backToMainMenu, this, &MainWindow::switchToMainMenu);
     connect(levelSelect, &LevelSelect::goToLevel1, this, &MainWindow::switchToGame);
     connect(levelSelect, &LevelSelect::goToLevel2, this, &MainWindow::switchToGame);
-    connect(levelSelect, &LevelSelect::goToEndless, this, &MainWindow::switchToGame);
     connect(levelSelect, &LevelSelect::goToLevel1, game, &Game::loadLevel1);
     connect(levelSelect, &LevelSelect::goToLevel2, game, &Game::loadLevel2);
-    connect(levelSelect, &LevelSelect::goToEndless, game, &Game::loadLevelendless);
     connect(settings, &Settings::backToMainMenu, this, &MainWindow::switchToMainMenu);
     connect(settings, &Settings::themeToggle, this, [=]() {
         QString theme = settingsManager->theme();

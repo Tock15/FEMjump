@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QGraphicsView>
+#include "winplatform.h"
 
 class Player : public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
