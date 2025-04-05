@@ -11,8 +11,6 @@ LevelSelect::LevelSelect(QWidget *parent)
     connect(ui->btnBack, &QPushButton::clicked, this, &LevelSelect::backToMainMenu);
     connect(ui->oneBtn, &QPushButton::clicked, this, &LevelSelect::goToLevel1);
     connect(ui->twoBtn, &QPushButton::clicked, this, &LevelSelect::goToLevel2);
-    connect(ui->endlessBtn, &QPushButton::clicked, this, &LevelSelect::goToEndless);
-
 }
 
 LevelSelect::~LevelSelect() {
