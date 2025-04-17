@@ -199,7 +199,7 @@ void Player::turn(){
 void Player::startChargingJump() {
     if (!isJumping) {
         chargingJump = true;
-        jumpPower = 5; // Start with a minimum jump power
+        jumpPower = 4; // Start with a minimum jump power
         velocityX = 0;
         jumpChargeTimer->start(25);
         qDebug() << "Jump charging started!";
